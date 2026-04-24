@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: d-maq-backend
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: 20.19.9
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 3600s
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: d-maq-redis
+          property: connectionString
+
+  - type: keyvalue
+    name: d-maq-redis
+    ipAllowList: []

@@ -10,10 +10,6 @@ import { DataAccessModule } from '@dmaq/data-access';
     DataAccessModule,
     BullModule.registerQueue({
       name: 'task-reminders',
-      redis: {
-        host: process.env.REDIS_HOST || 'localhost',
-        port: parseInt(process.env.REDIS_PORT || '6379', 10),
-      },
     }),
   ],
   controllers: [TasksController],

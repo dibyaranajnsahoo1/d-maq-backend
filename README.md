@@ -70,6 +70,60 @@ docker compose down
 
 The Dockerfile builds the Nx Nest app in a builder stage and runs only the compiled API in the final image as a non-root user.
 
+## Render Deployment
+
+This repo includes `render.yaml` for Render Blueprint deployment. The API runs as a Node web service and uses Render Key Value for the Redis-compatible Bull queue connection.
+
+Before deploying, create a MongoDB Atlas cluster or Azure Cosmos DB Mongo API database and copy the Mongo connection string.
+
+### Deploy with Blueprint
+
+1. Push this repository to GitHub.
+2. In Render, choose **New +** then **Blueprint**.
+3. Connect this GitHub repository and select the `main` branch.
+4. Render will read `render.yaml` and create:
+   - `d-maq-backend` web service
+   - `d-maq-redis` Key Value service
+5. When Render asks for `MONGO_URI`, paste your MongoDB Atlas or Cosmos DB Mongo API connection string.
+6. Deploy the Blueprint.
+
+Render commands are:
+
+```sh
+npm ci && npm run build
+npm start
+```
+
+After deployment:
+
+```text
+https://<your-render-service>.onrender.com
+https://<your-render-service>.onrender.com/api/docs
+```
+
+If you use MongoDB Atlas, add Render outbound access in Atlas Network Access. For a simple assignment demo, you can allow access from `0.0.0.0/0`; for production, restrict access according to your hosting/network policy.
+
+### Manual Render Setup
+
+If you do not use the Blueprint, create a **Web Service** with:
+
+```text
+Runtime: Node
+Build Command: npm ci && npm run build
+Start Command: npm start
+Health Check Path: /
+```
+
+Set these environment variables:
+
+```env
+MONGO_URI=<your MongoDB Atlas or Cosmos DB Mongo API URI>
+JWT_SECRET=<strong random secret>
+JWT_EXPIRES_IN=3600s
+REDIS_URL=<your Render Key Value or managed Redis connection string>
+NODE_VERSION=20.19.9
+```
+
 ## Scripts
 
 ```sh

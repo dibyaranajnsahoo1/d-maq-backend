@@ -7,6 +7,7 @@ import { AuthModule } from '@dmaq/auth';
 import { UsersModule } from '@dmaq/users';
 import { TasksModule } from '@dmaq/tasks';
 import { AnalyticsModule } from '@dmaq/analytics';
+import { getRedisOptions } from '@dmaq/utils';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -37,10 +38,11 @@ import { AppService } from './app.service';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        redis: {
-          host: configService.get<string>('REDIS_HOST') ?? 'localhost',
-          port: configService.get<number>('REDIS_PORT') ?? 6379,
-        },
+        redis: getRedisOptions({
+          url: configService.get<string>('REDIS_URL'),
+          host: configService.get<string>('REDIS_HOST'),
+          port: configService.get<string>('REDIS_PORT'),
+        }),
       }),
     }),
 
