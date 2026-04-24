@@ -5,6 +5,8 @@
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
@@ -14,7 +16,15 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@dmaq/models": ["models/src/index.ts"],
+      "@dmaq/auth": ["auth/src/index.ts"],
+      "@dmaq/data-access": ["data-access/src/index.ts"],
+      "@dmaq/tasks": ["tasks/src/index.ts"],
+      "@dmaq/users": ["users/src/index.ts"],
+      "@dmaq/analytics": ["analytics/src/index.ts"],
+      "@dmaq/utils": ["utils/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
